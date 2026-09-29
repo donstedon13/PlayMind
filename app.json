@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "PlayMind PB Score",
+    "slug": "pb-score",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#05070C",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#05070C"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.playmind.pbscore",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Η εφαρμογή χρησιμοποιεί την κάμερα για να φωτογραφίσεις το δελτίο σου και να διαβαστούν αυτόματα τα στοιχεία του.",
+        "NSPhotoLibraryUsageDescription": "Η εφαρμογή χρειάζεται πρόσβαση στις φωτογραφίες σου για να ανεβάσεις screenshot δελτίου."
+      }
+    },
+    "android": {
+      "package": "com.playmind.pbscore",
+      "adaptiveIcon": {
+        "backgroundColor": "#05070C"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Η εφαρμογή χρειάζεται πρόσβαση στις φωτογραφίες σου για να ανεβάσεις screenshot δελτίου.",
+          "cameraPermission": "Η εφαρμογή χρησιμοποιεί την κάμερα για να φωτογραφίσεις το δελτίο σου."
+        }
+      ]
+    ]
+  }
+}

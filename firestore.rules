@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // Ο client δεν επιτρέπεται να αλλάξει vipStatus/vipExpiresAt/scanCreditsRemaining
+      // μόνος του — αυτά τα γράφουν μόνο οι Cloud Functions (initUserDoc,
+      // analyzeBetSlip, και το μελλοντικό RevenueCat webhook).
+      allow update: if request.auth != null && request.auth.uid == userId
+                    && !request.resource.data.diff(resource.data).affectedKeys()
+                         .hasAny(['vipStatus', 'vipExpiresAt', 'scanCreditsRemaining']);
+
+      allow create: if request.auth != null && request.auth.uid == userId;
+    }
+
+    match /bets/{betId} {
+      allow read: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
+
+      // Ο client μπορεί να διορθώσει δικά του λάθη OCR (πχ λάθος ποσό),
+      // αλλά δεν μπορεί να "αυτο-verify" ένα bet χωρίς το settlement function.
+      allow update: if request.auth != null && request.auth.uid == resource.data.userId
+                    && !(request.resource.data.isVerified == true && resource.data.isVerified == false);
+
+      allow delete: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+  }
+}
